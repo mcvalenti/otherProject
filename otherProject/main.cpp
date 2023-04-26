@@ -30,6 +30,32 @@ void add_perturbation(void (*funcptr)(void *),void* param){
     }
 }
 
+class propagator
+{
+	private:
+	vector<void (*)(void *)> vec_functions; // vector of function pointers
+	vector<void *> vec_params; // vector of parameters pointers (Structures)
+	// DVector de acceleraciones.
+
+    public:
+    void addPerturbation(void (*funcptr)(void *),void* param);
+    void propagate();
+};
+void propagator::addPerturbation(void (*funcptr)(void *),void* param)
+{
+        	vec_functions.push_back(funcptr);
+			vec_params.push_back(param);
+ }
+void propagator::propagate()
+{	// Debe devolver el DVector de acceleraciones acumulado
+	// Se puede?
+	int i;
+    i=0;
+    for  (auto f : this->vec_functions){
+         f(this->vec_params[i]); // Cada f debe devolver un DVector de acceleraciones
+         i++;
+    }
+}
 
 int main() {
 	//double mu=398600.448;
@@ -70,6 +96,18 @@ int main() {
 	// Add both functions to vec_functions
 	add_perturbation(&central_body, &cbody);
 	add_perturbation(&sum, &tparam);
+
+
+	// Propagator as a Class
+	cout<<"============================="<<endl;
+	cout<<"PROPAGATOR CLASS"<<endl;
+	cout<<"============================="<<endl;
+	propagator myprop;
+
+	myprop.addPerturbation(&central_body, &cbody);
+	myprop.addPerturbation(&sum, &tparam);
+	myprop.propagate();
+
 
 	// End of Code
 	cout<<"End of processing!";
