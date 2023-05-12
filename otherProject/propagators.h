@@ -12,21 +12,17 @@
 #include"DVector.h"
 
 struct cBody_param{
-	DVector sv;
-	DVector acc;
 	double mu;
 };
 
 struct thrust_param {
-	DVector sv;
-	DVector acc_thr;
 	double isp;
 	double thrust;
 
 };
 
-DVector central_body(void* param);
-DVector thrust(void *param);
+DVector central_body(void* param, const DVector& dv);
+DVector thrust(void* param, const DVector& dv);
 
 
 class propagator
@@ -45,7 +41,6 @@ class propagator
     public:
 
 	propagator(DVector& init_sv, int total_time, double step);
-
     void addPerturbation(DVector (*funcptr)(void *, const DVector&),void* param);
     void propagate();
 
