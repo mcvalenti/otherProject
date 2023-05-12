@@ -17,13 +17,39 @@ struct cBody_param{
 	double mu;
 };
 
-void central_body(void* param);
-DVector _deriv(DVector& dv);
-DVector keplerian(DVector& dv, double mu);
-DVector thrust(DVector& dv, double T, double isp);
-vector<DVector> collects_perturbations(DVector& dv, vector<string>& perturbations);
-DVector RK4(double h, DVector& dv);
+struct thrust_param {
+	DVector sv;
+	DVector acc_thr;
+	double isp;
+	double thrust;
 
+};
+
+DVector central_body(void* param);
+DVector thrust(void *param);
+
+
+class propagator
+{
+	private:
+	DVector total_acc;
+	vector<DVector (*)(void *, const DVector&)> vec_functions; // vector of function pointers
+	vector<void *> vec_params; // vector of parameters pointers (Structures)
+	int total_time;
+	double step;
+	DVector init_sv;
+	DVector sv;
+	DVector RK4();
+	DVector derivatives(DVector& dv);
+
+    public:
+
+	propagator(DVector& init_sv, int total_time, double step);
+
+    void addPerturbation(DVector (*funcptr)(void *, const DVector&),void* param);
+    void propagate();
+
+};
 
 
 #endif /* PROPAGATORS_H_ */

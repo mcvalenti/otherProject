@@ -95,6 +95,14 @@ double& DVector::operator[](unsigned index){
     return this->vec[index];
 }
 
+const double& DVector::operator[](unsigned index)const{
+	// DVector element
+    if(index>asize-1){
+        throw std::runtime_error("out of bounds");
+    }
+    return this->vec[index];
+}
+
 ostream& operator<<(ostream& os, const DVector& vec){
 	// Print DVector
     for(unsigned i=0;i<vec.asize;i++){

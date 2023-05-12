@@ -16,6 +16,9 @@ class DVector
         DVector(double* vec, unsigned asize);
         DVector(const DVector &other);
         double& operator[](unsigned index);
+        const double& operator[](unsigned index)const;
+
+
         const DVector operator+(const DVector &other)const;
         DVector& operator+=(const DVector &other);
         DVector& operator=(const DVector &other);
