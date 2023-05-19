@@ -9,39 +9,39 @@
 #define PROPAGATORS_H_
 
 #include <vector>
-#include"DVector.h"
+#include"LDVector.h"
 
 struct cBody_param{
-	double mu;
+	long double mu;
 };
 
 struct thrust_param {
-	double isp;
-	double thrust;
+	long double isp;
+	long double thrust;
 
 };
 
-DVector central_body(void* param, const DVector& dv);
-DVector thrust(void* param, const DVector& dv);
+LDVector central_body(void* param, const LDVector& dv);
+LDVector thrust(void* param, const LDVector& dv);
 
 
 class propagator
 {
 	private:
-	DVector total_acc;
-	vector<DVector (*)(void *, const DVector&)> vec_functions; // vector of function pointers
+	LDVector total_acc;
+	vector<LDVector (*)(void *, const LDVector&)> vec_functions; // vector of function pointers
 	vector<void *> vec_params; // vector of parameters pointers (Structures)
 	int total_time;
-	double step;
-	DVector init_sv;
-	DVector sv;
-	DVector RK4();
-	DVector derivatives(DVector& dv);
+	long double step;
+	LDVector init_sv;
+	LDVector sv;
+	LDVector RK4();
+	LDVector derivatives(LDVector& dv);
 
     public:
 
-	propagator(DVector& init_sv, int total_time, double step);
-    void addPerturbation(DVector (*funcptr)(void *, const DVector&),void* param);
+	propagator(LDVector& init_sv, int total_time, long double step);
+    void addPerturbation(LDVector (*funcptr)(void *, const LDVector&),void* param);
     void propagate();
 
 };

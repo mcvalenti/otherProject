@@ -3,23 +3,23 @@
 #include <vector>
 #include <fstream>
 #include "propagators.h"
-#include "DVector.h"
+#include "LDVector.h"
 using namespace std;
 
 
 int main() {
 
 	unsigned size=7;
-	double sv_m[size]={6858,0,0,0,7.7102,0,2000};
-	DVector init_sv(sv_m, 7);
+	long double sv_m[size]={6858,0,0,0,7.7102,0,2000};
+	LDVector init_sv(sv_m, 7);
 
 
 	// Propagator as a Class
 	cout<<"============================="<<endl;
 	cout<<"PROPAGATOR CLASS"<<endl;
 	cout<<"============================="<<endl;
-	double step=1.0;
-	int total_time=86400*5;
+	long double step=1.0;
+	int total_time=5851.01245965262;
 	
 	propagator myprop(init_sv,total_time,step);
 
