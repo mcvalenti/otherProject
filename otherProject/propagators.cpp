@@ -14,6 +14,32 @@
 using namespace std;
 
 
+LDVector thrust(void *param, const LDVector& dv){
+/*
+		Computes thrust forces and mass consumption
+		input: thrust_param structure
+		output: thrust acceleration LDVector
+*/
+    thrust_param* thr_p = (thrust_param*)param;
+	const long double g0=9.81; // [km/s2]
+	long double vel_norm;
+	long double coeff;
+	LDVector acc_thrust(7);
+
+    vel_norm=sqrtl(dv[3]*dv[3]+dv[4]*dv[4]+dv[5]*dv[5]);
+    coeff=thr_p->thrust/(dv[6]*vel_norm*1000); // Thrust aligned with velocities [km/s2]
+    acc_thrust[0]=0.0;
+    acc_thrust[1]=0.0;
+    acc_thrust[2]=0.0;
+    acc_thrust[3]= dv[3]*coeff;
+    acc_thrust[4]= dv[4]*coeff;
+    acc_thrust[5]= dv[5]*coeff;
+    acc_thrust[6]=(long double)(-thr_p->thrust)/(thr_p->isp*g0);
+
+	return acc_thrust;
+
+}
+
 LDVector central_body(void* param, const LDVector& dv){
 	/*
 	 Computes Central Body accelerations.
@@ -29,7 +55,7 @@ LDVector central_body(void* param, const LDVector& dv){
 	cBody_param* cbody=(cBody_param*)param;
 	LDVector cbody_acc(7);
 	long double r, r3, coef;
-	r=sqrt(dv[0]*dv[0]+dv[1]*dv[1]+dv[2]*dv[2]);
+	r=sqrtl(dv[0]*dv[0]+dv[1]*dv[1]+dv[2]*dv[2]);
 	r3=r*r*r;
 	coef=-cbody->mu/r3;
 	cbody_acc[0]=0;
@@ -39,36 +65,11 @@ LDVector central_body(void* param, const LDVector& dv){
 	cbody_acc[4]=dv[1]*coef;
 	cbody_acc[5]=dv[2]*coef;
 	cbody_acc[6]=0;
-
-	return cbody_acc;
+    return cbody_acc;
 }
 
 
-LDVector thrust(void *param, const LDVector& dv){
-/*
-		Computes thrust forces and mass consumption
-		input: thrust_param structure
-		output: thrust acceleration LDVector
-*/
-    thrust_param* thr_p = (thrust_param*)param;
-	const long double g0=9.81; // [km/s2]
-	long double vel_norm;
-	long double coeff;
-	LDVector acc_thrust(7);
 
-    vel_norm=sqrt(dv[3]*dv[3]+dv[4]*dv[4]+dv[5]*dv[5]);
-    coeff=thr_p->thrust/(dv[6]*vel_norm*1000); // Thrust aligned with velocities [km/s2]
-    acc_thrust[0]=0.0;
-    acc_thrust[1]=0.0;
-    acc_thrust[2]=0.0;
-    acc_thrust[3]= dv[3]*coeff;
-    acc_thrust[4]= dv[4]*coeff;
-    acc_thrust[5]= dv[5]*coeff;
-    acc_thrust[6]=-thr_p->thrust/(thr_p->isp*g0);
-
-	return acc_thrust;
-
-}
 
 
 
@@ -86,7 +87,7 @@ LDVector propagator::derivatives(LDVector& dv){
 
 	// Luego las ejecuta una a una
     for  (auto f : this->vec_functions){
-    	accelerations+=f(this->vec_params[i], this->init_sv);
+    	accelerations+=f(this->vec_params[i], dv);
         i++;
     }
     f_deriv=f_deriv+accelerations;
@@ -97,8 +98,8 @@ LDVector propagator::derivatives(LDVector& dv){
 
 void propagator::addPerturbation(LDVector (*funcptr)(void *, const LDVector&),void* param)
 {
-        	vec_functions.push_back(funcptr);
-			vec_params.push_back(param);
+    vec_functions.push_back(funcptr);
+    vec_params.push_back(param);
  }
 void propagator::propagate()
 {
@@ -114,7 +115,7 @@ void propagator::propagate()
 	}
 	outputFile.open("output.csv");
 	for (LDVector sv : sv_list){
-		outputFile << sv<<endl;
+		outputFile <<sv<<endl;
 	}
 	outputFile.close();
 }
@@ -135,7 +136,7 @@ LDVector propagator::RK4(){
 	k3=derivatives(y2)*this->step;
 	y3=dv+k3;
 	k4=derivatives(y3);
-	dv1=dv+(k1+k2*2+k3*2+k4)*(1.0/6.0)*this->step;
+	dv1=dv+(k1+k2*2+k3*2+k4)*((long double)(1.0L/6.0L))*this->step;
 
 	this->init_sv = dv1;
 	return this->init_sv;

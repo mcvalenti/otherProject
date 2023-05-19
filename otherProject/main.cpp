@@ -2,6 +2,7 @@
 #include <cmath>
 #include <vector>
 #include <fstream>
+#include <time.h>
 #include "propagators.h"
 #include "LDVector.h"
 using namespace std;
@@ -20,7 +21,7 @@ int main() {
 	cout<<"============================="<<endl;
 	long double step=1.0;
 	int total_time=5851.01245965262;
-	
+
 	propagator myprop(init_sv,total_time,step);
 
 	cBody_param cbody;
@@ -39,6 +40,6 @@ int main() {
 ;
 	// End of Code
 	cout<<"End of processing!";
-			
+
 	return 0;
 }

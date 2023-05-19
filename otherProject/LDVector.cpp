@@ -5,11 +5,11 @@
  *      Author: ceci
  */
 
-
 #include "LDVector.h"
 #include <string.h>
 #include <stdexcept>
-
+#include <iomanip>
+using namespace std;
 LDVector::LDVector()
 {
 	// empty LDVector
@@ -113,6 +113,8 @@ const long double& LDVector::operator[](unsigned index)const{
 
 ostream& operator<<(ostream& os, const LDVector& vec){
 	// Print LDVector
+	os << std::fixed;
+    os << std::setprecision(10);
     for(unsigned i=0;i<vec.asize;i++){
         os<<vec.vec[i]<<"\t";
     }

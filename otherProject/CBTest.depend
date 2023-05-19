@@ -1,0 +1,39 @@
+# depslib dependency file v1.0
+1684529997 source:d:\git\otherproject\otherproject\dvector.cpp
+	"DVector.h"
+	<string.h>
+	<stdexcept>
+
+1684529997 d:\git\otherproject\otherproject\dvector.h
+	<iostream>
+
+1684533881 source:d:\git\otherproject\otherproject\ldvector.cpp
+	"LDVector.h"
+	<string.h>
+	<stdexcept>
+	<iomanip>
+
+1684529997 d:\git\otherproject\otherproject\ldvector.h
+	<iostream>
+
+1684534838 source:d:\git\otherproject\otherproject\propagators.cpp
+	<iostream>
+	<fstream>
+	<cmath>
+	<vector>
+	"propagators.h"
+	"LDVector.h"
+
+1684529997 d:\git\otherproject\otherproject\propagators.h
+	<vector>
+	"LDVector.h"
+
+1684530240 source:d:\git\otherproject\otherproject\main.cpp
+	<iostream>
+	<cmath>
+	<vector>
+	<fstream>
+	<time.h>
+	"propagators.h"
+	"LDVector.h"
+
