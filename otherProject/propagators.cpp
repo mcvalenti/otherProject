@@ -11,6 +11,7 @@
 #include <vector>
 #include "propagators.h"
 #include "LDVector.h"
+#include "auxiliaries.h"
 using namespace std;
 
 
@@ -79,6 +80,17 @@ propagator::propagator(LDVector& init_sv, int total_time, long double step){
 	this->step=step;
 }
 
+
+propagator::propagator(long double a, long double e, long double i,
+		long double RAAN, long double arg_per, long double nu){
+	this->a=a;
+	this->e=e;
+	this->i=i;
+	this->RAAN=RAAN;
+	this->arg_per=arg_per;
+	this->nu=nu;
+}
+
 LDVector propagator::derivatives(LDVector& dv){
 	int i=0;
 	long double sv[7]={dv[3], dv[4], dv[5], 0.0, 0.0, 0.0, 0.0};
@@ -141,4 +153,94 @@ LDVector propagator::RK4(){
 	this->init_sv = dv1;
 	return this->init_sv;
 }
+
+void propagator::sv2oe(LDVector& init_sv){
+	/*
+	 Gets state vector (sv) values and sets
+	 the keplerian orbital elements.
+	 to know: a,e,i,RAAN,arg_per,nu (true anomaly)
+	 */
+	long double mu=398600.448;
+	long double earth_radius=6378.0; //[km]
+	long double GM=398600.4405; //[km3/s2]
+	LDVector pos(3);
+	LDVector vel(3);
+	long double pos_mod;
+	long double vel_mod;
+	LDVector h(3);
+	long double h_mod;
+	LDVector h_norm(3);
+	long double vr;
+	LDVector e_vec(3);
+
+	// Position vector
+	pos[0]=init_sv[0];
+	pos[1]=init_sv[1];
+	pos[2]=init_sv[2];
+	// Velocity vector
+	vel[0]=init_sv[3];
+	vel[1]=init_sv[4];
+	vel[2]=init_sv[5];
+
+	pos_mod=sqrtl(pos[0]*pos[0]+pos[1]*pos[1]+pos[2]*pos[2]);
+	vel_mod=sqrtl(vel[0]*vel[0]+vel[1]*vel[1]+vel[2]*vel[2]);
+
+	// Angular momentum
+	h=cross(pos,vel);
+	h_mod=sqrtl(h[0]*h[0]+h[1]*h[1]+h[2]*h[2]);
+	h_norm[0]=h[0]*(1.0/h_mod);
+	h_norm[1]=h[1]*(1.0/h_mod);
+	h_norm[2]=h[2]*(1.0/h_mod);
+
+	// inclination
+	this->i=atanl(sqrtl(h[0]*h[0]+h[1]*h[1])/h[2]);
+	if (this->i < 0.0){
+		this->i=M_PI+this->i;
+	}
+	// RAAN
+	if (h[1]!=0){
+		this->RAAN=atanl(-h[0]/h[1]);
+		// A non-zero value (true) if the sign of x is negative; and zero (false) otherwise.
+		if (signbit(-h[1])>0){
+			this->RAAN=this->RAAN+M_PI;
+		}
+	}else{
+		this->RAAN=0.0;
+	}
+	// Radial Velocity
+	vr=pos[0]*vel[0]+pos[1]*vel[1]+pos[2]*vel[2];
+	vr=vr/pos_mod;
+
+	// eccentricity
+	e_vec=(1/GM)*((vel_mod*vel_mod-(GM/pos_mod))*pos-pos_mod*vr*vel);
+	this->e=sqrtl(e_vec[0]*e_vec[0]+e_vec[1]*e_vec[1]+e_vec[2]*e_vec[2]);
+
+}
+/*
+
+        """
+         a
+        """
+
+        a=hmod*hmod/(GM*(1-e*e))
+
+
+        """
+         M
+        """
+        E=np.arctan((np.dot(r,v)/(a*a*a))/(1-rmod/a))
+        if np.sign((1-rmod/a)) < 0.0:
+            E=E+np.pi
+        M=E-e*np.sin(E)
+
+        """
+         w, nu
+        """
+        w=0 # Not interested for this exercise
+
+        if vr>=0:
+            nu=np.arccos(np.dot(e_vect/e,r/rmod))
+        else:
+            nu=2*np.pi-np.arccos(np.dot(e_vect/e,r/rmod))
+
 

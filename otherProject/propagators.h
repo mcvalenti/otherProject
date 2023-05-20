@@ -35,14 +35,18 @@ class propagator
 	long double step;
 	LDVector init_sv;
 	LDVector sv;
+	long double a,e,i,RAAN,arg_per,nu;
 	LDVector RK4();
 	LDVector derivatives(LDVector& dv);
 
     public:
 
 	propagator(LDVector& init_sv, int total_time, long double step);
+	propagator(long double a, long double e, long double i,
+			long double RAAN, long double arg_per, long double nu);
     void addPerturbation(LDVector (*funcptr)(void *, const LDVector&),void* param);
     void propagate();
+    void sv2oe(LDVector& init_sv);
 
 };
 
