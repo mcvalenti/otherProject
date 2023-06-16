@@ -34,13 +34,13 @@ class propagator
 	int total_time;
 	long double step;
 	LDVector init_sv;
-	LDVector sv;
-	long double a,e,i,RAAN,arg_per,nu;
 	LDVector RK4();
 	LDVector derivatives(LDVector& dv);
+	// TO DO POS and VEL modulus method.
 
     public:
-
+	LDVector sv;
+	long double a,e,i,RAAN,arg_per,nu;
 	propagator(LDVector& init_sv, int total_time, long double step);
 	propagator(long double a, long double e, long double i,
 			long double RAAN, long double arg_per, long double nu);

@@ -70,10 +70,6 @@ LDVector central_body(void* param, const LDVector& dv){
 }
 
 
-
-
-
-
 propagator::propagator(LDVector& init_sv, int total_time, long double step){
 	this->init_sv=init_sv;
 	this->total_time=total_time;
@@ -81,7 +77,7 @@ propagator::propagator(LDVector& init_sv, int total_time, long double step){
 }
 
 
-propagator::propagator(long double a, long double e, long double i,
+propagator::propagator(long double a, long double e, long double i, // @suppress("Class members should be properly initialized")
 		long double RAAN, long double arg_per, long double nu){
 	this->a=a;
 	this->e=e;
@@ -154,14 +150,29 @@ LDVector propagator::RK4(){
 	return this->init_sv;
 }
 
+
 void propagator::sv2oe(LDVector& init_sv){
 	/*
+	 -----------------------------------------------------
+	 Curtis - Orbit Mechanical for Engineering Students
+	 -----------------------------------------------------
 	 Gets state vector (sv) values and sets
 	 the keplerian orbital elements.
 	 to know: a,e,i,RAAN,arg_per,nu (true anomaly)
-	 */
-	long double mu=398600.448;
-	long double earth_radius=6378.0; //[km]
+	 Cartesian
+	 pos: position vector
+	 vel: velocity vector
+	 Keplerian
+	 a: semimajor axis [m]
+	 e: eccentricity
+	 i: inclination [deg]
+	 RAAN: Right Ascention of Ascending Node [deg]
+	 arg_per: argument of perigee [deg]
+	 nu: true anomaly [deg]
+	*/
+
+	//long double mu=398600.448;
+	//long double earth_radius=6378.0; //[km]
 	long double GM=398600.4405; //[km3/s2]
 	LDVector pos(3);
 	LDVector vel(3);
@@ -172,6 +183,11 @@ void propagator::sv2oe(LDVector& init_sv){
 	LDVector h_norm(3);
 	long double vr;
 	LDVector e_vec(3);
+	long double M_anom;
+	long double E_anom;
+	LDVector aux1(3);
+	LDVector aux2(3);
+	LDVector aux3(3);
 
 	// Position vector
 	pos[0]=init_sv[0];
@@ -212,35 +228,34 @@ void propagator::sv2oe(LDVector& init_sv){
 	vr=vr/pos_mod;
 
 	// eccentricity
-	e_vec=(1/GM)*((vel_mod*vel_mod-(GM/pos_mod))*pos-pos_mod*vr*vel);
+	e_vec=(pos*(vel_mod*vel_mod-(GM/pos_mod))+vel*pos_mod*(-1)*vr)*(1/GM);
 	this->e=sqrtl(e_vec[0]*e_vec[0]+e_vec[1]*e_vec[1]+e_vec[2]*e_vec[2]);
 
+	// semimajor axis
+	this->a = h_mod*h_mod/(GM*(1-this->e*this->e));
+
+	// Mean anomaly
+
+	E_anom=atanl(((vr*pos_mod)/(this->a*this->a*this->a))/(1-pos_mod/this->a));
+	if (signbit(1-pos_mod/this->a)){E_anom=E_anom+M_PI;};
+	M_anom=E_anom-this->e*sinl(E_anom);
+
+
+	// Argument of Perigee
+		this->arg_per=NAN; // TO DO!, not necessary now.
+	// True Anomaly
+	/*
+	 If e*pos>0, then nu lies in I or IV quadrant.
+	 If e*pos<0, then nu lies in II or III quadrant.
+	 */
+
+	aux1=e_vec*this->e;
+	aux2=pos*pos_mod;
+	if (vr>=0){
+		this->nu=acosl(dot3(aux1,aux2));
+	}
+	else{
+		this->nu=2*M_PI-acosl(dot3(aux1,aux2));
+	}
 }
-/*
-
-        """
-         a
-        """
-
-        a=hmod*hmod/(GM*(1-e*e))
-
-
-        """
-         M
-        """
-        E=np.arctan((np.dot(r,v)/(a*a*a))/(1-rmod/a))
-        if np.sign((1-rmod/a)) < 0.0:
-            E=E+np.pi
-        M=E-e*np.sin(E)
-
-        """
-         w, nu
-        """
-        w=0 # Not interested for this exercise
-
-        if vr>=0:
-            nu=np.arccos(np.dot(e_vect/e,r/rmod))
-        else:
-            nu=2*np.pi-np.arccos(np.dot(e_vect/e,r/rmod))
-
 

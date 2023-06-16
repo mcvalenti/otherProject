@@ -17,7 +17,7 @@ int main() {
 
 	// Propagator as a Class
 	cout<<"============================="<<endl;
-	cout<<"PROPAGATOR CLASS"<<endl;
+	cout<<"PROPAGATOR "<<endl;
 	cout<<"============================="<<endl;
 	long double step=1.0;
 	int total_time=5851.01245965262;
@@ -36,10 +36,30 @@ int main() {
 	//myprop.addPerturbation(&thrust, &tparam);
 	const clock_t begin_time = clock();
 	myprop.propagate();
-	std::cout << "Excecution time!"<<float( clock () - begin_time ) /  CLOCKS_PER_SEC << endl;
-;
+
+
+	// End of Propagation
+	std::cout << "Propagation time: "<<float( clock () - begin_time ) /  CLOCKS_PER_SEC << endl;
+
+	std::cout <<myprop.sv <<std::endl;
+	myprop.sv2oe(myprop.sv);
+	std::cout <<"Semimajor Axis : "<<myprop.a <<std::endl;
+
 	// End of Code
 	cout<<"End of processing!";
 
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
