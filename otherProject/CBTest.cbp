@@ -32,7 +32,13 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 		</Compiler>
+		<Unit filename="DVector.cpp" />
+		<Unit filename="DVector.h" />
+		<Unit filename="LDVector.cpp" />
+		<Unit filename="LDVector.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="propagators.cpp" />
+		<Unit filename="propagators.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

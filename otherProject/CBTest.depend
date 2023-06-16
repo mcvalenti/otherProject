@@ -16,24 +16,30 @@
 1684529997 d:\git\otherproject\otherproject\ldvector.h
 	<iostream>
 
-1684534838 source:d:\git\otherproject\otherproject\propagators.cpp
+1686929259 source:d:\git\otherproject\otherproject\propagators.cpp
 	<iostream>
 	<fstream>
 	<cmath>
 	<vector>
 	"propagators.h"
 	"LDVector.h"
+	"auxiliaries.h"
 
-1684529997 d:\git\otherproject\otherproject\propagators.h
+1686929259 d:\git\otherproject\otherproject\propagators.h
 	<vector>
 	"LDVector.h"
 
-1684530240 source:d:\git\otherproject\otherproject\main.cpp
+1686929259 source:d:\git\otherproject\otherproject\main.cpp
 	<iostream>
 	<cmath>
 	<vector>
 	<fstream>
 	<time.h>
 	"propagators.h"
+	"LDVector.h"
+
+1686929259 d:\git\otherproject\otherproject\auxiliaries.h
+
+1686929259 source:d:\git\otherproject\otherproject\auxiliaries.cpp
 	"LDVector.h"
 
