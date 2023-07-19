@@ -10,5 +10,7 @@
 
 LDVector cross(LDVector& a,LDVector& b);
 long double dot3(LDVector& a,LDVector& b);
+double period(long double& semimajorAxis);
 
 #endif /* AUXILIARIES_H_ */
+

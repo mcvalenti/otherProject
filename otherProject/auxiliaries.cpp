@@ -9,6 +9,20 @@
 #define AUXILIARIES_CPP_
 
 #include "LDVector.h"
+#include <cmath>
+
+double period(long double& semimajorAxis){
+    /*
+    -Computes orbital period in seconds-
+    semimajorAxis: float [km]
+     */
+	double period;
+	double mu=398600.448;
+	if (semimajorAxis>0){
+		period=2*M_PI*sqrt(semimajorAxis*semimajorAxis*semimajorAxis/mu);
+	}
+	return period;
+};
 
 LDVector cross(LDVector& a, LDVector& b){
 	LDVector cross_prod(3);

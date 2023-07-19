@@ -1,0 +1,15 @@
+Brief description of the code. 
+
+
+propagators:
+Class and methods to collect init conditions,
+perturbartions and to do de integration (RK4).
+Structs  of the parameters that the perturbation
+models requires. 
+
+perturbations:
+Models of perturbations that return accelerations.
+
+auxiliaries:
+Functions to operate with LDVectors and other functions. 
+
