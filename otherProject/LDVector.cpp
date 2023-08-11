@@ -121,7 +121,14 @@ ostream& operator<<(ostream& os, const LDVector& vec){
     return os;
 }
 
-
+bool LDVector::areEqual(const LDVector &other, double tolerance){
+	for(unsigned i=0;i<this->asize;i++){
+		if (abs(vec[i]-other[i])>tolerance){
+			return false;
+		}
+	}
+	return true;
+}
 
 LDVector::~LDVector()
 {

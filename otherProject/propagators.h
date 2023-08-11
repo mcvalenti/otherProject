@@ -2,7 +2,7 @@
  * propagators.h
  *
  *  Class and methods to collect init conditions,
- *	perturbartions and to do de integration (RK4).
+ *	perturbartions and to do the integration (RK4).
  *	Structs  of the parameters that the perturbation
  *	models requires.
  *  propagator::addPerturbation will require
@@ -35,6 +35,7 @@ LDVector central_body(void* param, const LDVector& dv);
 LDVector thrust(void* param, const LDVector& dv);
 void lagrange_coeff_from_true_anomaly(long double r, long double r0, long double h, double delta_nu,
 										double& f, double& g, double &fdot, double &gdot);
+LDVector sv_from_true_anomaly(LDVector& sv, double delta_nu);
 
 
 class propagator
@@ -60,8 +61,6 @@ class propagator
     void addPerturbation(LDVector (*funcptr)(void *, const LDVector&),void* param);
     void propagate(string const& filename);
     void sv2oe(LDVector& current_sv);
-    LDVector sv_from_true_anomaly(LDVector& sv, double delta_nu);
-
 };
 
 

@@ -35,6 +35,8 @@ class LDVector
         long double getValue(unsigned index);
 
         friend ostream& operator<<(ostream& os, const LDVector& vec);
+        bool areEqual(const LDVector &other, double tolerance);
+
 };
 
 

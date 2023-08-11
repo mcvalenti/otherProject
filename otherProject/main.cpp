@@ -7,6 +7,7 @@
 #include "propagators.h"
 #include "auxiliaries.h"
 #include "LDVector.h"
+#include "my_tests.h"
 using namespace std;
 
 
@@ -21,6 +22,10 @@ int main() {
 	double rp=Rt+hp; // Perigee radius
 	double ra=Rt+ha; // Apogee radius
 	long double semimajorAxis=(rp+ra)/2;
+
+	// TESTS
+	cout << "testing anomaly propagation ...";
+	anomaly_propagation();
 
 
 	//-----------------------------------------
@@ -47,13 +52,15 @@ int main() {
 	cbody_prop.sv2oe(cbody_prop.last_sv);
 	std::cout <<"Semimajor Axis : "<<cbody_prop.a <<std::endl;
 
+
 	//-----------------------------------------
 	// Orbit 2 - With Continuous thrust
 	//-----------------------------------------
-	int thrust_time=1000;
+	int thrust_time=262.0;
 	long double thrust_step=0.1;
 	string filename1="output_files/orbit2.csv";
-	propagator thrust_prop(cbody_last_sv,thrust_time,thrust_step);
+	//propagator thrust_prop(cbody_last_sv,thrust_time,thrust_step);
+	propagator thrust_prop(init_sv,thrust_time,thrust_step);
 	thrust_param tparam;
 	tparam.isp = 300;
 	tparam.thrust = 10000;
@@ -61,29 +68,42 @@ int main() {
 	thrust_prop.addPerturbation(&thrust, &tparam);
 	thrust_prop.propagate(filename1);
 
-	std::cout <<"True anomaly nu: "<<thrust_prop.a <<std::endl;
-
 	//-----------------------------------------
 	// Orbit 3 - Free propagation to Apogee
 	//-----------------------------------------
-	thrust_prop.sv2oe(thrust_prop.last_sv);
-	double period1=period(thrust_prop.a);
-	int free_prop_time=ceil(period1);
-	long double free_step=1;
-	string filename2="output_files/orbit3.csv";
-	propagator free_prop(thrust_prop.last_sv,free_prop_time/2,free_step);
-	free_prop.addPerturbation(&central_body, &cbody);
-	free_prop.propagate(filename2);
 
+	thrust_prop.sv2oe(thrust_prop.last_sv);
+	std::cout <<"True anomaly nu: "<<thrust_prop.nu <<std::endl;
+	double delta_nu=180-thrust_prop.nu; // computes delta true anomaly to apogee
+	//sv_from_true_anomaly(sv_0,delta_nu) to compute radious at final point
+	// if not ra=22378 --> increase thrust_time
+
+	//Estimation
+	long double semimajor_axis_transfer=14618.0;
+	double period2=period(semimajor_axis_transfer);
+	// transfer Free propagation
+	propagator free_prop(thrust_prop.last_sv,period2-thrust_time,step);
+	cBody_param free_body;
+	free_body.mu=398600.448;
+	LDVector free_body_last_sv;
+
+	// Add perturbation
+	free_prop.addPerturbation(&central_body, &free_body); // args: function and structure
+	string filename3="output_files/orbit3.csv";
+	free_prop.propagate(filename3);
+	free_prop.sv2oe(free_prop.last_sv);
+	std::cout <<"Semimajor Axis : "<<free_prop.a <<std::endl;
 
 	// End of Propagation
 	std::cout << "Propagation time: "<<float( clock () - begin_time ) /  CLOCKS_PER_SEC << endl;
 
-	std::cout <<free_prop.last_sv <<std::endl;
-	free_prop.sv2oe(free_prop.last_sv);
-	std::cout <<"Semimajor Axis : "<<free_prop.a <<std::endl;
+
+
+
 
 	// End of Code
+	std::cout << "Propagation time: "<<float( clock () - begin_time ) /  CLOCKS_PER_SEC << endl;
+	cout << endl;
 	cout<<"End of processing!";
 
 	return 0;

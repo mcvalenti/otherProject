@@ -264,12 +264,15 @@ void propagator::sv2oe(LDVector& init_sv){
 	}
 }
 
-LDVector propagator::sv_from_true_anomaly(LDVector& sv, double delta_nu){
+LDVector sv_from_true_anomaly(LDVector& sv, double delta_nu){
 	/* Curtis - Algorithm 2.3 to compute new state vector considering
-	 * sv_0 and delta_nu (nu=true anomaly)*/
+	 * sv_0 and delta_nu (nu=true anomaly)
+	 -------------------------------------------------------------------
+	 delta_nu [deg]
+	 */
 
 	long double GM=398600.4405; //[km3/s2]
-	LDVector new_sv;
+	LDVector new_sv(6);
 	LDVector pos1(3);
 	LDVector vel1(3);
 	LDVector pos(3);
@@ -285,6 +288,7 @@ LDVector propagator::sv_from_true_anomaly(LDVector& sv, double delta_nu){
 	double g=0;
 	double fdot=0;
 	double gdot=0;
+	double deg2rad=M_PI/180.0;
 
 
 	// Position vector
@@ -306,6 +310,7 @@ LDVector propagator::sv_from_true_anomaly(LDVector& sv, double delta_nu){
 	vr=pos[0]*vel[0]+pos[1]*vel[1]+pos[2]*vel[2];
 	vr=vr/pos_mod;
 
+	delta_nu=delta_nu*deg2rad;
 	term_cos=(h_mod*h_mod/(GM*pos_mod)-1)*cosl(delta_nu);
 	term_sin=(h_mod*vr*sinl(delta_nu)/GM);
 
@@ -334,10 +339,11 @@ void lagrange_coeff_from_true_anomaly(long double r, long double r0, long double
 
 	long double GM=398600.4405; //[km3/s2]
 	long double square_bracket;
-	f=1-(GM*r/h*h)*(1-cosl(delta_nu));
+
+	f=1.0-(GM*r/(h*h))*(1-cosl(delta_nu));
 	g=r*r0*sinl(delta_nu)/h;
-	square_bracket=((GM/h*h)*(1-cosl(delta_nu))-(1/r0)-(1/r));
+	square_bracket=((GM/(h*h))*(1-cosl(delta_nu))-(1/r0)-(1/r));
 	fdot=(GM/h)*((1-cosl(delta_nu))/sinl(delta_nu))*square_bracket;
-	gdot=1-(GM*r0/h*h)*(1-cosl(delta_nu));
+	gdot=1-(GM*r0/(h*h))*(1-cosl(delta_nu));
 
 }
