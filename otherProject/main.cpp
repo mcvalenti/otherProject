@@ -16,22 +16,64 @@ int main() {
 	unsigned size=7;
 	long double sv_m[size]={6858,0,0,0,7.7102,0,2000};
 	LDVector init_sv(sv_m, 7);
-	double Rt=6378;
-	double hp=480; // Perigee altitude
-	double ha=800; // Apogee altitude
-	double rp=Rt+hp; // Perigee radius
-	double ra=Rt+ha; // Apogee radius
-	long double semimajorAxis=(rp+ra)/2;
+	//double Rt=6378;
+	//double hp=480; // Perigee altitude
+	//double ha=800; // Apogee altitude
+	//double rp=Rt+hp; // Perigee radius
+	//double ra=Rt+ha; // Apogee radius
+	//long double semimajorAxis=(rp+ra)/2;
+	//double aux=get_max_absolute(init_sv); ????????????????????????????????
+	cout << init_sv << endl;
+	//cout << aux << endl;
 
 	// TESTS
+	cout << "--------TESTs-------------";
 	cout << "testing anomaly propagation ...";
 	anomaly_propagation();
+	cout << "-------- END OF TESTs-------------";
 
+
+	//-----------------------------------------
+	// Orbit 2 - With Continuous thrust
+	//-----------------------------------------
+	std::cout <<"---------------------"<<std::endl;
+	std::cout <<"- CONTINUOUS THRUST "<<std::endl;
+	std::cout <<"---------------------"<<std::endl;
+	float thrust_time=261.1127;
+	float thrust_step=0.1;
+	string filename1="output_files/orbit2.csv";
+	cBody_param cbody;
+	cbody.mu=398600.448;
+	propagator thrust_prop(init_sv,thrust_time,thrust_step);
+	thrust_param tparam;
+	tparam.isp = 300.0;
+	tparam.thrust = 10000.0;
+	thrust_prop.addPerturbation(&central_body, &cbody);
+	thrust_prop.addPerturbation(&thrust, &tparam);
+	thrust_prop.propagate(filename1);
+
+
+	cout<<" End-of-burn state vector: "<<thrust_prop.last_sv<<endl;
+	thrust_prop.sv2oe(thrust_prop.last_sv);
+	std::cout <<"True anomaly nu: "<<thrust_prop.nu <<std::endl;
+	double delta_nu=(M_PI-thrust_prop.nu)*180.0/M_PI; // computes delta true anomaly to apogee
+	std::cout <<"Delta anomaly nu: "<<delta_nu <<std::endl;
+	LDVector final = sv_from_true_anomaly(thrust_prop.last_sv,delta_nu); //to compute radius at final point
+	cout << "At apogee: " << final << endl;
+
+
+
+	/*
 
 	//-----------------------------------------
 	// Orbit 1 - Initial - Central Body
 	//-----------------------------------------
-	long double step=1.0;
+	std::cout <<std::endl;
+	std::cout <<std::endl;
+	std::cout <<"---------------------"<<std::endl;
+	std::cout <<"- CENTRAL BODY "<<std::endl;
+	std::cout <<"---------------------"<<std::endl;
+	float step=1.0;
 	double period0=period(semimajorAxis);
 	int total_time=ceil(period0);
 	string filename0="output_files/orbit1.csv";
@@ -56,26 +98,29 @@ int main() {
 	//-----------------------------------------
 	// Orbit 2 - With Continuous thrust
 	//-----------------------------------------
-	int thrust_time=262.0;
-	long double thrust_step=0.1;
+	std::cout <<"---------------------"<<std::endl;
+	std::cout <<"- CONTINUOUS THRUST "<<std::endl;
+	std::cout <<"---------------------"<<std::endl;
+	float thrust_time=261.1127;
+	float thrust_step=0.1;
 	string filename1="output_files/orbit2.csv";
-	//propagator thrust_prop(cbody_last_sv,thrust_time,thrust_step);
 	propagator thrust_prop(init_sv,thrust_time,thrust_step);
 	thrust_param tparam;
-	tparam.isp = 300;
-	tparam.thrust = 10000;
+	tparam.isp = 300.0;
+	tparam.thrust = 10000.0;
 	thrust_prop.addPerturbation(&central_body, &cbody);
 	thrust_prop.addPerturbation(&thrust, &tparam);
 	thrust_prop.propagate(filename1);
 
-	//-----------------------------------------
-	// Orbit 3 - Free propagation to Apogee
-	//-----------------------------------------
 
+	cout<<" End-of-burn state vector: "<<thrust_prop.last_sv<<endl;
 	thrust_prop.sv2oe(thrust_prop.last_sv);
 	std::cout <<"True anomaly nu: "<<thrust_prop.nu <<std::endl;
-	double delta_nu=180-thrust_prop.nu; // computes delta true anomaly to apogee
-	//sv_from_true_anomaly(sv_0,delta_nu) to compute radious at final point
+	double delta_nu=(M_PI-thrust_prop.nu)*180.0/M_PI; // computes delta true anomaly to apogee
+	std::cout <<"Delta anomaly nu: "<<delta_nu <<std::endl;
+	LDVector final = sv_from_true_anomaly(thrust_prop.last_sv,delta_nu); //to compute radius at final point
+	cout << "At apogee: " << final << endl;
+
 	// if not ra=22378 --> increase thrust_time
 
 	//Estimation
@@ -105,6 +150,7 @@ int main() {
 	std::cout << "Propagation time: "<<float( clock () - begin_time ) /  CLOCKS_PER_SEC << endl;
 	cout << endl;
 	cout<<"End of processing!";
+	*/
 
 	return 0;
 }

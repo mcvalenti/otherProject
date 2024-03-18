@@ -32,3 +32,29 @@ void anomaly_propagation(){
 }
 
 
+/*
+void RK45(double* y, double t, double h){
+
+
+	double tolerance = 1e-5;
+
+	// RK4(5) derivatives
+
+		for (size_t i = 0; i < y.size(); ++i) {
+		y_next_rk4[i] += 25 * k1[i] / 216 + 1408 * k3[i] / 2565 + 2197 * k4[i] / 4104 - k5[i] / 5;
+		y_next_rk5[i] += 16 * k1[i] / 135 + 6656 * k3[i] / 12825 + 28561 * k4[i] / 56430 - 9 * k5[i] / 50 + 2 * k6[i] / 55;
+        }
+
+
+double computeError(const std::vector<double>& y_next_rk4, const std::vector<double>& y_next_rk5, double tolerance) {
+    double max_error = 0.0;
+    for (size_t i = 0; i < y_next_rk4.size(); ++i) {
+        double error = std::abs(y_next_rk5[i] - y_next_rk4[i]);
+        max_error = std::max(max_error, error / (tolerance * std::abs(y_next_rk5[i])));
+    }
+    return max_error;
+}
+
+
+}
+*/

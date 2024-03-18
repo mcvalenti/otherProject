@@ -10,6 +10,4 @@
 
 void anomaly_propagation();
 
-
-
 #endif /* MY_TESTS_H_ */

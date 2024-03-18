@@ -19,23 +19,29 @@ class LDVector
         unsigned asize;
     public:
         long double* vec;
+
+        // Constructors
         LDVector();
         LDVector(unsigned asize);
         LDVector(long double* vec, unsigned asize);
         LDVector(const LDVector &other);
+
+        // Operators
         long double& operator[](unsigned index);
         const long double& operator[](unsigned index)const;
-
-
         const LDVector operator+(const LDVector &other)const;
+        const LDVector operator-(const LDVector &other)const;
         LDVector& operator+=(const LDVector &other);
         LDVector& operator=(const LDVector &other);
         const LDVector operator*(long double val)const;
-        virtual ~LDVector();
+        friend ostream& operator<<(ostream& os, const LDVector& vec);
+
+        // Methods
+        bool areEqual(const LDVector &other, double tolerance);
+        double get_max_absolute(const LDVector &other);
         long double getValue(unsigned index);
 
-        friend ostream& operator<<(ostream& os, const LDVector& vec);
-        bool areEqual(const LDVector &other, double tolerance);
+        virtual ~LDVector();
 
 };
 

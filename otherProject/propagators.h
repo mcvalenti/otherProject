@@ -44,10 +44,12 @@ class propagator
 	LDVector total_acc;
 	vector<LDVector (*)(void *, const LDVector&)> vec_functions; // vector of:(function pointer, state vector)
 	vector<void *> vec_params; // vector of parameters pointers (Structures)
-	int total_time;
-	long double step;
+	float total_time;
+	float step;
 	LDVector init_sv;
+	vector<LDVector> sv_list;
 	LDVector RK4();
+	LDVector RK4_5(double tspan, LDVector& y, double h, double tolerance);
 	LDVector derivatives(LDVector& dv);
 	// TO DO POS and VEL modulus method.
 
@@ -55,7 +57,7 @@ class propagator
 	LDVector current_sv;
 	LDVector last_sv;
 	long double a,e,i,RAAN,arg_per,nu;
-	propagator(LDVector& init_sv, int total_time, long double step);
+	propagator(LDVector& init_sv, float total_time, float step);
 	propagator(long double a, long double e, long double i,
 			long double RAAN, long double arg_per, long double nu);
     void addPerturbation(LDVector (*funcptr)(void *, const LDVector&),void* param);

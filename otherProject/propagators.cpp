@@ -71,7 +71,7 @@ LDVector central_body(void* param, const LDVector& dv){
 }
 
 
-propagator::propagator(LDVector& init_sv, int total_time, long double step){
+propagator::propagator(LDVector& init_sv, float total_time, float step){
 	this->init_sv=init_sv;
 	this->total_time=total_time;
 	this->step=step;
@@ -114,22 +114,24 @@ void propagator::addPerturbation(LDVector (*funcptr)(void *, const LDVector&),vo
 void propagator::propagate(string const& filename)
 {
 	// Propagation with RK4
-	int i;
-	vector<LDVector> sv_list;
+	//int i;
+	//int step_num; // !! to control if finish by defect of by excess
+	//vector<LDVector> sv_list;
 	ofstream outputFile;
-	cout<<"Doing the propagation ...this could take some time!"<<endl;
+	//step_num=this->total_time/this->step;
 	// TO DO! check init vector is not null
-	for (i=0; i<=this->total_time; i++){
+	/*for (i=0; i<=step_num; i++){
 		this->current_sv=this->RK4();
 		sv_list.push_back(this->current_sv);
-	}
+	}*/
+	//this->current_sv=this->RK4_iter(this->total_time);
 	// TO DO! Replace the printing file for a sv_list as a propagation attribute
 	outputFile.open(filename);
-	for (LDVector sv : sv_list){
+	/*for (LDVector sv : sv_list){
 		outputFile <<sv<<endl;
-	}
+	}*/
 	outputFile.close();
-	this->last_sv=sv_list.back();
+	//this->last_sv=sv_list.back();
 	cout<<"Finished!"<<endl;
 }
 
@@ -153,6 +155,37 @@ LDVector propagator::RK4(){
 
 	this->current_sv = dv1;
 	return this->current_sv;
+}
+
+LDVector propagator::RK4_5(double tspan, LDVector& y, double h, double tolerance){
+
+	LDVector phi4,phi5,y5, y4;
+	LDVector y_new;
+	LDVector k1,k2,k3,k4,k5,k6;
+	LDVector err;
+	double h_new;
+	int p=4;
+
+
+	k1 = derivatives(y) * h;
+	k2 = derivatives(y) * h + k1 * (1/4);
+	k3 = derivatives(y) * h  +  k1 * (3/32) + k2 * (9/ 32);
+	k4 = derivatives(y) * h + k1 * (1932/ 2197) - k2 * (7200/2197) + k3 * (7296/ 2197);
+	k5 = derivatives(y) * h + k1 * (439/216) - k2 * 8 + k3 * (3680/513) - k4 * (845/4104);
+	k6 = derivatives(y) * h - k1 * (8/27) + k2 * 2 - k3 * (3544/2565) + k4 * (1859/4104) - k5 * (11/40);
+
+	phi4= k1 * (25/216) + k3 * (1408/2565) + k4 * (2197/4104) - k5* (1/5);
+	phi5= k1 * (16/135) + k3 * (6656/12825) + k4 * (28561/56430) - k5 * (9/50) +k6 * (2/55);
+
+	y4=y+phi4*h;
+	y5=y+phi5*h;
+
+	err=y5-y4;
+
+
+    return y_new;
+
+
 }
 
 
@@ -254,8 +287,9 @@ void propagator::sv2oe(LDVector& init_sv){
 	 If e*pos<0, then nu lies in II or III quadrant.
 	 */
 
-	aux1=e_vec*this->e;
-	aux2=pos*pos_mod;
+	aux1=e_vec*(1.0/this->e);
+	aux2=pos*(1/pos_mod);
+	cout<<"dot product: "<<dot3(aux1,aux2)<<endl;
 	if (vr>=0){
 		this->nu=acosl(dot3(aux1,aux2));
 	}
