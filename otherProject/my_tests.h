@@ -8,6 +8,7 @@
 #ifndef MY_TESTS_H_
 #define MY_TESTS_H_
 
+void run_tests();
 void anomaly_propagation();
 
 #endif /* MY_TESTS_H_ */

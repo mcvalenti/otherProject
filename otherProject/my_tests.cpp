@@ -31,6 +31,11 @@ void anomaly_propagation(){
 	
 }
 
+void run_tests(){
+	cout << "testing anomaly propagation ...";
+	anomaly_propagation();
+}
+
 
 /*
 void RK45(double* y, double t, double h){

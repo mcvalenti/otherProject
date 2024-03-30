@@ -28,8 +28,7 @@ int main() {
 
 	// TESTS
 	cout << "--------TESTs-------------";
-	cout << "testing anomaly propagation ...";
-	anomaly_propagation();
+	run_tests();
 	cout << "-------- END OF TESTs-------------";
 
 

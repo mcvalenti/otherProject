@@ -1,9 +1,27 @@
-Brief description of the code. 
+==================================================================================
+Flight Dynamics – Project
+==================================================================================
+-----------------------------------
+* Other project
+-----------------------------------
+Sistema de propagación. 
+* Trabaja con vectores de coordenadas (SV) con flotantes de alta precisión (LLV) → definición
+* Inicializa con un SV0
+* Utiliza un integrador RK4 para propagar → a futuro considerar otros integadores
+* Define Funciones de Perturbación → a futuro ampliar los modelos de perturbación
+* Incorpora maniobras en las propagaciones → a futuro incorporar maniobras continuas.
 
+====================================
+Brief description of the code. 
+====================================
+Developments and test based on the reference:
+
+Curtis, H. D. (2020). Orbital mechanics for engineering students:
+ Revised Reprint. Butterworth-Heinemann.
 
 propagators:
 Class and methods to collect init conditions,
-perturbartions and to do de integration (RK4).
+perturbartions and to do the integration (RK4).
 Structs  of the parameters that the perturbation
 models requires. 
 
