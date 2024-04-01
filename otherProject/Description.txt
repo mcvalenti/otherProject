@@ -1,9 +1,9 @@
-==================================================================================
+=====================================================================================
 Flight Dynamics – Project
-==================================================================================
------------------------------------
+=====================================================================================
+-------------------------------------------------------------------------------------
 * Other project
------------------------------------
+-------------------------------------------------------------------------------------
 Sistema de propagación. 
 * Trabaja con vectores de coordenadas (SV) con flotantes de alta precisión (LLV) → definición
 * Inicializa con un SV0
@@ -11,9 +11,21 @@ Sistema de propagación.
 * Define Funciones de Perturbación → a futuro ampliar los modelos de perturbación
 * Incorpora maniobras en las propagaciones → a futuro incorporar maniobras continuas.
 
-====================================
+=====================================================================================
 Brief description of the code. 
-====================================
+=====================================================================================
+
+The code is basically an  Earth's satellite propagator designed in a scalable manner.
+Different orbits around the Earth can be considered since force models can be added 
+considering different environments. 
+Impulsive maneuvers can be added. (Finite PENDING")
+Also transfer orbit scenarios can be performed.
+
+
+Step by Step configuration
+-------------------------------------------------------------------------------------
+
+
 Developments and test based on the reference:
 
 Curtis, H. D. (2020). Orbital mechanics for engineering students:

@@ -8,14 +8,22 @@
 #include "auxiliaries.h"
 #include "LDVector.h"
 #include "my_tests.h"
+#include "mission.h"
+
 using namespace std;
 
 
 int main() {
 
 	unsigned size=7;
+	float mass;
 	long double sv_m[size]={6858,0,0,0,7.7102,0,2000};
 	LDVector init_sv(sv_m, 7);
+	mass=init_sv[6];
+	SpaceVehicle my_sat(init_sv, mass);
+
+	std::cout<<my_sat<<std::endl;
+
 	//double Rt=6378;
 	//double hp=480; // Perigee altitude
 	//double ha=800; // Apogee altitude
@@ -23,18 +31,18 @@ int main() {
 	//double ra=Rt+ha; // Apogee radius
 	//long double semimajorAxis=(rp+ra)/2;
 	//double aux=get_max_absolute(init_sv); ????????????????????????????????
-	cout << init_sv << endl;
 	//cout << aux << endl;
 
 	// TESTS
-	cout << "--------TESTs-------------";
+	cout << "--------TESTs-------------\n";
 	run_tests();
-	cout << "-------- END OF TESTs-------------";
+	cout << "-------- END OF TESTs-------------\n";
 
 
 	//-----------------------------------------
 	// Orbit 2 - With Continuous thrust
 	//-----------------------------------------
+	/*
 	std::cout <<"---------------------"<<std::endl;
 	std::cout <<"- CONTINUOUS THRUST "<<std::endl;
 	std::cout <<"---------------------"<<std::endl;
@@ -51,14 +59,13 @@ int main() {
 	thrust_prop.addPerturbation(&thrust, &tparam);
 	thrust_prop.propagate(filename1);
 
-
 	cout<<" End-of-burn state vector: "<<thrust_prop.last_sv<<endl;
 	thrust_prop.sv2oe(thrust_prop.last_sv);
 	std::cout <<"True anomaly nu: "<<thrust_prop.nu <<std::endl;
 	double delta_nu=(M_PI-thrust_prop.nu)*180.0/M_PI; // computes delta true anomaly to apogee
 	std::cout <<"Delta anomaly nu: "<<delta_nu <<std::endl;
 	LDVector final = sv_from_true_anomaly(thrust_prop.last_sv,delta_nu); //to compute radius at final point
-	cout << "At apogee: " << final << endl;
+	cout << "At apogee: " << final << endl;*/
 
 
 

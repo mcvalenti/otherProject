@@ -24,15 +24,15 @@ void anomaly_propagation(){
 	double delta_nu=120.0;
 	sv_1=sv_from_true_anomaly(sv_0,delta_nu);
 	if (sv_1.areEqual(result,tolerance)){
-		cout << "TEST OK" << endl;
+		cout << "TEST OK\n" << endl;
 	}else{
-		cout << "TEST NOK" << endl;
+		cout << "TEST NOK\n" << endl;
 	}
 	
 }
 
 void run_tests(){
-	cout << "testing anomaly propagation ...";
+	cout << "---ANOMALY PROPAGATION---";
 	anomaly_propagation();
 }
 

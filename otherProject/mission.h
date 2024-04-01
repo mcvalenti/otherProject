@@ -16,8 +16,10 @@ class SpaceVehicle
 	public:
 		LDVector init_sv;
 		float mass;
+		SpaceVehicle();
 		SpaceVehicle(LDVector& init_sv, float mass);
-		~SpaceVehicle();
+		//~SpaceVehicle();
+		friend ostream& operator<<(ostream& os, const SpaceVehicle& sat);
 		
 };		
 
