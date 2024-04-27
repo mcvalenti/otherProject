@@ -163,8 +163,8 @@ LDVector propagator::RK4_5(double tspan, LDVector& y, double h, double tolerance
 	LDVector y_new;
 	LDVector k1,k2,k3,k4,k5,k6;
 	LDVector err;
-	double h_new;
-	int p=4;
+	//double h_new;
+	//int p=4;
 
 
 	k1 = derivatives(y) * h;

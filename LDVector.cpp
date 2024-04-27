@@ -18,6 +18,7 @@ using namespace std;
 LDVector::LDVector()
 {
 	// empty LDVector
+	std::cout<<"LDVector Constructor\n";
     this->vec = NULL;
     this->asize = 0;
     //ctor
@@ -25,6 +26,7 @@ LDVector::LDVector()
 LDVector::LDVector(long double* vec, unsigned asize)
 {
 	// LDVector from array
+	std::cout<<"LDVector Constructor\n";
     this->vec = new long double[asize];
     this->asize = asize;
     //ctor
@@ -33,6 +35,7 @@ LDVector::LDVector(long double* vec, unsigned asize)
 LDVector::LDVector(unsigned asize)
 {
 	// LDVector initialize in zeros
+	std::cout<<"LDVector Constructor\n";
     this->vec = new long double[asize];
     this->asize = asize;
     for(unsigned i=0;i<asize;i++){
@@ -42,6 +45,7 @@ LDVector::LDVector(unsigned asize)
 LDVector::LDVector(const LDVector &other)
 {
 	// LDVector from another LDVector
+	std::cout<<"LDVector Constructor\n";
     this->vec = new long double[other.asize];
     this->asize = other.asize;
     //ctor
@@ -107,12 +111,17 @@ const long double& LDVector::operator[](unsigned index)const{
     }
     return this->vec[index];
 }
+
+unsigned int LDVector::getSize()const{
+	return this->asize;
+}
+
 ostream& operator<<(ostream& os, const LDVector& vec){
 	// Print LDVector
-	os << std::fixed;
-    os << std::setprecision(10);
-    for(unsigned i=0;i<vec.asize;i++){
-        os<<vec.vec[i]<<"\t";
+	//os << std::fixed;
+	//os << std::setprecision(10);
+    for(unsigned i=0;i<vec.getSize();i++){
+        os<<vec[i]<<"\t";
     }
     return os;
 }
@@ -141,10 +150,13 @@ double LDVector::get_max_absolute(const LDVector &other){
 	return aux;
 }
 
+
+
 LDVector::~LDVector()
 {
     //dtor
     delete [] this->vec;
+    std::cout<<"LDVector Destructor\n";
 }
 
 

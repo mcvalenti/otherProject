@@ -6,17 +6,33 @@
  */
 
 #include "Orbit.h"
-#include "LDVector.h"
 
-StateVector::StateVector(LDVector& sv){
-	this->sv0=sv;
+StateVector::StateVector()
+{
+	std::cout<<"StateVector constructor \n";
+	this->x1=0;
+	this->x2=0;
+	this->x3=0;
+	this->x4=0;
+	this->x5=0;
+	this->x6=0;
+	this->mass=0;
+	this->elements="notspecified";
+}
+
+StateVector::StateVector(long double x, long double y, long double z, long double vx, long double vy, long double vz,
+			long double mass, std::string elements){
+	std::cout<<"StateVector constructor \n";
+	this->x1=x;
+	this->x2=y;
+	this->x3=z;
+	this->x4=vx;
+	this->x5=vy;
+	this->x6=vz;
+	this->mass=mass;
+	this->elements=elements;
 };
 
-ostream& operator<<(ostream& os, const StateVector& sv){
-	// Print StateVector attributes
-	std::cout<<sv<<std::endl;
-    return os;
-}
 
 OrbitalElements::OrbitalElements(LDVector& oe){
 	this->a=oe[0];
@@ -29,3 +45,12 @@ OrbitalElements::OrbitalElements(LDVector& oe){
 };
 
 
+ostream& operator<<(ostream& os, const StateVector& vec){
+	// Print LDVector
+	//os << std::fixed;
+	//os << std::setprecision(10);
+    for(unsigned i=0;i<vec.getSize();i++){
+        os<<vec[i]<<"\t";
+    }
+    return os;
+}

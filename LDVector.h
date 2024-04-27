@@ -17,8 +17,9 @@ class LDVector
     private:
 
         unsigned asize;
-    public:
         long double* vec;
+
+    public:
 
         // Constructors
         LDVector();
@@ -40,9 +41,10 @@ class LDVector
         bool areEqual(const LDVector &other, double tolerance);
         double get_max_absolute(const LDVector &other);
         long double getValue(unsigned index);
+        unsigned int getSize()const;
 
-        virtual ~LDVector();
-
+        //virtual ~LDVector();
+        ~LDVector();
 };
 
 

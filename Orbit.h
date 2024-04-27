@@ -14,18 +14,23 @@
 
 #include"LDVector.h"
 
-class StateVector{
+class StateVector: public LDVector {
 	/*
 	 *  LDVector with Cartesian Coordinates of the orbit and mass
-	 *
+	 *  TO DO check dimensions
 	*/
 	private:
-	LDVector sv0;
+	long double x1, x2, x3, x4, x5, x6;
+	long double mass;
+	std::string elements;
 	public:
-	StateVector()=default;
-	StateVector(LDVector& sv); // TO DO check dimensions
-	void toOrbitalElements(LDVector& sv, LDVector& oe);
-	friend ostream& operator<<(ostream& os, const StateVector& sv);
+	StateVector();
+	StateVector(long double x, long double y, long double z, long double vx, long double vy, long double vz,
+				long double mass, std::string elements);
+	~StateVector(){std::cout<<"StateVector destructor \n";};
+	//void toOrbitalElements(LDVector& sv, LDVector& oe);
+	//friend ostream& operator<<(ostream& os, const StateVector& sv);
+	friend ostream& operator<<(ostream& os, const StateVector& vec);
 
 };
 
