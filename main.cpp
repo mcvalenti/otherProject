@@ -25,16 +25,11 @@ int main() {
 	cout << "-------- END OF TESTs-------------\n";
 
 	unsigned size=7;
-	float mass;
 	long double sv_m[size]={6858,0,0,0,7.7102,0,2000};
 	LDVector init_sv(sv_m, 7);
-	mass=init_sv[6];
-	SpaceVehicle my_sat(init_sv, mass);
 	StateVector my_sv(init_sv);
 
-
-	std::cout<<my_sat<<std::endl;
-	std::cout<<my_sv.x<<std::endl;
+	std::cout<<my_sv<<std::endl;
 
 	return 0;
 }

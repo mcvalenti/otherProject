@@ -6,29 +6,15 @@
  */
 
 #include "Orbit.h"
-
 #include "LDVector.h"
 
 StateVector::StateVector(LDVector& sv){
-	this->x=sv[0];
-	this->y=sv[1];
-	this->z=sv[2];
-	this->vx=sv[3];
-	this->vy=sv[4];
-	this->vz=sv[5];
-	this->mass=sv[6];
+	this->sv0=sv;
 };
 
 ostream& operator<<(ostream& os, const StateVector& sv){
 	// Print StateVector attributes
-	os<<sv.x<<"\t";
-	os<<sv.y<<"\t";
-	os<<sv.z<<"\t";
-	os<<sv.vx<<"\t";
-	os<<sv.vy<<"\t";
-	os<<sv.vz<<"\t";
-	os<<sv.mass<<"\t";
-
+	std::cout<<sv<<std::endl;
     return os;
 }
 

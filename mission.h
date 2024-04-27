@@ -19,13 +19,10 @@ class SpaceVehicle
 		//incorporate StateVector to ARCH
 		StateVector sv;
 	public:
-		LDVector init_sv;
-		float mass;
-		SpaceVehicle();
-		SpaceVehicle(LDVector& init_sv, float mass);
+		//SpaceVehicle();
 		SpaceVehicle(StateVector& sv);
 		//~SpaceVehicle();
-		friend ostream& operator<<(ostream& os, const SpaceVehicle& sat);
+		//friend ostream& operator<<(ostream& os, const SpaceVehicle& sat);
 		
 };		
 

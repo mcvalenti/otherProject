@@ -19,10 +19,10 @@ class StateVector{
 	 *  LDVector with Cartesian Coordinates of the orbit and mass
 	 *
 	*/
+	private:
+	LDVector sv0;
 	public:
-	long double x, y, z, vx, vy, vz;
-	float mass;
-	StateVector();
+	StateVector()=default;
 	StateVector(LDVector& sv); // TO DO check dimensions
 	void toOrbitalElements(LDVector& sv, LDVector& oe);
 	friend ostream& operator<<(ostream& os, const StateVector& sv);
