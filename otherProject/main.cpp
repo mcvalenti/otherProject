@@ -9,6 +9,7 @@
 #include "LDVector.h"
 #include "my_tests.h"
 #include "mission.h"
+#include "interplanetary.h"
 
 using namespace std;
 
@@ -18,11 +19,15 @@ int main() {
 	unsigned size=7;
 	float mass;
 	long double sv_m[size]={6858,0,0,0,7.7102,0,2000};
+
 	LDVector init_sv(sv_m, 7);
 	mass=init_sv[6];
 	SpaceVehicle my_sat(init_sv, mass);
-
 	std::cout<<my_sat<<std::endl;
+
+	run_interplanetary();
+
+
 
 	//double Rt=6378;
 	//double hp=480; // Perigee altitude
