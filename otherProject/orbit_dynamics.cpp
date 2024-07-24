@@ -1,0 +1,55 @@
+/*
+ * orbit_dynamics.h
+ *
+ *  Basics formulas for the different conics
+ *
+ *
+ *  Created on: Jul 23, 2024
+ *      Author: macec
+ */
+
+#include "orbit_dynamics.h"
+#include <cmath>
+
+double elliptic_velocity(double semimajor_axis, double r_distance, double mu_central){
+	double vel_elliptic;
+	vel_elliptic=sqrt(mu_central*((2/r_distance)-(1/semimajor_axis)));
+	return vel_elliptic;
+}
+
+double escape_vel(double mu_center, double r_distance){
+	/* Escape Velocity -
+	 *  At a given distance r from mu, the escape velocity is
+	 *  v_esc=sqrt((2mu/r))
+	 */
+	double v_esc;
+	return v_esc=sqrt(2*mu_center/r_distance);
+}
+
+double hyperbolic_excess_velocity(double mu_center, double semimajor_axis){
+	// The speed at withc a body on a hyperbolic paht arrives at infinite
+	double v_inf;
+	v_inf=sqrt(mu_center/semimajor_axis);
+	return v_inf;
+}
+
+double hyperbolic_escape_velocity(double v_escape, double v_infinity){
+	/* The hyperbolic excess speed v_inf represents the excess kinetic energy
+	 * over that which is required to simply escape from the center of attraction.
+	 */
+	double hyper_escape_vel;
+	hyper_escape_vel=sqrt(v_escape*v_escape+v_infinity*v_infinity);
+	return  hyper_escape_vel;
+}
+
+double C3(double v_inf){
+	/* C3 Characteristic energy
+	 * The energy required for an interplanetary mission.
+	 * Also the maximum energy a launch vehivle can impart
+	 * to a SC of a given mass. C3)launch > C3)SC
+	 */
+	double C3=v_inf*v_inf;
+	return C3;
+}
+
+

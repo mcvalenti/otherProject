@@ -23,7 +23,11 @@ int main() {
 	LDVector init_sv(sv_m, 7);
 	mass=init_sv[6];
 	SpaceVehicle my_sat(init_sv, mass);
-	std::cout<<my_sat<<std::endl;
+	// TESTS
+	cout << "--------TESTs-------------\n";
+	run_tests();
+	cout << "-------- END OF TESTs-------------\n";
+
 
 	run_interplanetary();
 
@@ -38,10 +42,7 @@ int main() {
 	//double aux=get_max_absolute(init_sv); ????????????????????????????????
 	//cout << aux << endl;
 
-	// TESTS
-	cout << "--------TESTs-------------\n";
-	run_tests();
-	cout << "-------- END OF TESTs-------------\n";
+
 
 
 	//-----------------------------------------
