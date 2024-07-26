@@ -18,8 +18,10 @@ using namespace std;
 void run_interplanetary(){
 	// variables
 	double delta_v, v_elliptic, delta_v_final, v_park;
-	double vel_escape, hyper_escape;
+	double vel_escape, hyper_escape, v_eclip_norm;
+	double dv_total_departure, C3_orbital;
 	// Constants
+	double pi = M_PI;
 	double AU = 150e6; //  km 149597870.7;
 	double mu_earth = 398604; // km3/s2
 	double r_earth=6378;
@@ -28,8 +30,9 @@ void run_interplanetary(){
 	double mu_sun=1.33e11; // km3/s2
 
 	// Delta V Heliocentric Homann Transfer
-	double R1=AU; // km
-	double R2=39.7e6; // km Decided by the project
+	double R1=AU-0.8e06; // km
+	double R2=39.8e06; // km Decided by the project
+	double inc=22.5; // deg inclination wrt Ecliptic plane
 
 	std::cout<<"================================================="<<std::endl;
 	delta_v=delta_V_homann_heliocentric(mu_sun, R1, R2);
@@ -38,10 +41,20 @@ void run_interplanetary(){
 	v_elliptic=elliptic_velocity((R1+R2)/2, R1, mu_sun);
 	std::cout<<"S/C velocity in Elliptic Heliocentric - DV1: "<<v_elliptic<<std::endl;
 	std::cout<<"================================================="<<std::endl;
+	// Projection In the inclination plane
+	v_eclip_norm=v_elliptic*tan(inc*pi/180.0);
+	std::cout<<"S/C velocity - V_eclip_norm : "<<v_eclip_norm<<std::endl;
+	std::cout<<"================================================="<<std::endl;
+	// Total DV departure (module)
+	dv_total_departure=sqrt(delta_v*delta_v+v_eclip_norm*v_eclip_norm);
+	std::cout<<"Total DV departure (module): "<<dv_total_departure<<std::endl;
+	C3_orbital=dv_total_departure*dv_total_departure;
+	std::cout<<" C3 (orbital): "<<C3_orbital<<std::endl;
+	std::cout<<"================================================="<<std::endl;
 	v_park=parking_v(mu_earth, r_parking);
 	delta_v_final=delta_v_to_hyperbola(v_park, delta_v);
 	std::cout<<"V Parking - v_park: "<<v_park<<std::endl;
-	std::cout<<"From Parking to Hiperbolic excess - Total DV: "<<delta_v_final<<std::endl;
+	std::cout<<"From Parking to Hyperbolic excess - Total DV: "<<delta_v_final<<std::endl;
 	std::cout<<"================================================="<<std::endl;
 	vel_escape= escape_vel(mu_earth, r_parking);
 	std::cout<<"V escape from parking orbit - v_escape: "<<vel_escape<<std::endl;
@@ -49,6 +62,15 @@ void run_interplanetary(){
 	std::cout<<"Total departure velocity - sqrt(v_inf2+v_esc2)- Total V: "<<hyper_escape<<std::endl;
 	std::cout<<"================================================="<<std::endl;
 
+}
+
+void planetary_rendezvous(char inner_outer){
+	// Planetary rendezvous & flyby
+	double v_inf, v_sc, v_planet;
+	seguir aca
+	if (inner_outer == "inner")
+	{
+			v_inf=v_sc-v_planet;}
 }
 
 double delta_V_homann_heliocentric(double mu_sun, double R1, double R2){
@@ -81,8 +103,6 @@ double delta_v_to_hyperbola(double parking_v, double delta_v_inf){
 
 
 
-
-
 // Extra data
 //double falconH=11.2; // km/s
 //double distance_mars_sun = 1.524*AU;
@@ -90,3 +110,9 @@ double delta_v_to_hyperbola(double parking_v, double delta_v_inf){
 //double distance_mercury_sun = 5.833821e7; // 5.833821 x 10^7 km
 //double mass_sun = 1.989e30; // Masa del Sol en kg
 //double G = 6.67430e-11;  // m^3 kg^-1 s^-2
+// Flybys data
+// Venus_SOI=6.14e05 // km
+// Venus_SOI_bd=100
+// Earth_SOI=9.24e05 // km
+// Earth_SOI_bd=145
+

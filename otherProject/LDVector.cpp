@@ -123,15 +123,15 @@ long double LDVector::getValue(unsigned index){
 	// LDVector elements
     return this->vec[index];
 }
-bool LDVector::areEqual(const LDVector &other, double tolerance){
+/*bool LDVector::areEqual(const LDVector &other, double tolerance){
 	for(unsigned i=0;i<this->asize;i++){
 		if (abs(vec[i]-other[i])>tolerance){
 			return false;
 		}
 	}
 	return true;
-}
-double LDVector::get_max_absolute(const LDVector &other){
+}*/
+/*double LDVector::get_max_absolute(const LDVector &other){
 	unsigned aux=abs(vec[0]);
 	for (unsigned i=0;i<this->asize;i++){
 		if (abs(vec[i])>aux){
@@ -139,7 +139,7 @@ double LDVector::get_max_absolute(const LDVector &other){
 		}
 	}
 	return aux;
-}
+}*/
 
 LDVector::~LDVector()
 {

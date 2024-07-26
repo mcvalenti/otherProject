@@ -37,8 +37,8 @@ class LDVector
         friend ostream& operator<<(ostream& os, const LDVector& vec);
 
         // Methods
-        bool areEqual(const LDVector &other, double tolerance);
-        double get_max_absolute(const LDVector &other);
+        //bool areEqual(const LDVector &other, double tolerance);
+        //double get_max_absolute(const LDVector &other);
         long double getValue(unsigned index);
 
         virtual ~LDVector();

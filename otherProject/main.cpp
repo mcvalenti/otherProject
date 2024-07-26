@@ -24,9 +24,9 @@ int main() {
 	mass=init_sv[6];
 	SpaceVehicle my_sat(init_sv, mass);
 	// TESTS
-	cout << "--------TESTs-------------\n";
+/*	cout << "--------TESTs-------------\n";
 	run_tests();
-	cout << "-------- END OF TESTs-------------\n";
+	cout << "-------- END OF TESTs-------------\n";*/
 
 
 	run_interplanetary();
