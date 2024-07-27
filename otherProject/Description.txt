@@ -46,3 +46,9 @@ Models of perturbations that return accelerations.
 auxiliaries:
 Functions to operate with LDVectors and other functions. 
 
+interplanetary:
+Functions to operate planetary transfereces
+
+orbit_dynamics:
+Functions to compu parameters related with a particular orbit.
+
