@@ -10,6 +10,7 @@ Sistema de propagación.
 * Utiliza un integrador RK4 para propagar → a futuro considerar otros integadores
 * Define Funciones de Perturbación → a futuro ampliar los modelos de perturbación
 * Incorpora maniobras en las propagaciones → a futuro incorporar maniobras continuas.
+* Realiza calculos para transferencias interplanetarias --- En construccion
 
 =====================================================================================
 Brief description of the code. 
