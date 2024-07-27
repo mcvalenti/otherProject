@@ -4,6 +4,8 @@ Flight Dynamics – Project
 -------------------------------------------------------------------------------------
 * Other project
 -------------------------------------------------------------------------------------
+REVISAR Y ACTUALIZAR (2024) -- HACER NOTAS DE FECHAS PARA CONTROL DE VERSIONES DE 
+LA DESCRIPCION DEL PROYECTO
 Sistema de propagación. 
 * Trabaja con vectores de coordenadas (SV) con flotantes de alta precisión (LLV) → definición
 * Inicializa con un SV0
