@@ -10,6 +10,7 @@
 #include "my_tests.h"
 #include "mission.h"
 #include "interplanetary.h"
+#include "orbit_dynamics.h"
 
 using namespace std;
 
@@ -28,8 +29,6 @@ int main() {
 	run_tests();
 	cout << "-------- END OF TESTs-------------\n";*/
 
-
-	run_interplanetary();
 
 
 

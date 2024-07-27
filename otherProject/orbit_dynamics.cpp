@@ -11,6 +11,12 @@
 #include "orbit_dynamics.h"
 #include <cmath>
 
+double ellipse_period(double mu_center, double R1, double R2){
+	double tc;
+	tc=(M_PI/sqrt(mu_center))*(sqrt((R1+R2)*(R1+R2)*(R1+R2))/sqrt(8));
+	return tc;
+}
+
 double elliptic_velocity(double semimajor_axis, double r_distance, double mu_central){
 	double vel_elliptic;
 	vel_elliptic=sqrt(mu_central*((2/r_distance)-(1/semimajor_axis)));
@@ -51,5 +57,7 @@ double C3(double v_inf){
 	double C3=v_inf*v_inf;
 	return C3;
 }
+
+
 
 
