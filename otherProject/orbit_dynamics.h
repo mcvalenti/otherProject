@@ -12,7 +12,7 @@
 #define ORBIT_DYNAMICS_H_
 
 double elliptic_velocity(double semimajor_axis, double r_distance, double mu_central);
-double ellipse_period(double mu_center, double R1, double R2);
+double ellipse_period_from_radios(double mu_center, double R1, double R2);
 double escape_vel(double mu_center, double r_distance);
 double hyperbolic_excess_speed(double mu_center, double semimajor_axis);
 double hyperbolic_escape_velocity(double v_escape, double v_infinity);

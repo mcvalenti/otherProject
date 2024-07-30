@@ -66,22 +66,25 @@ void run_interplanetary(){
 
 }
 
-void run_trip_from_Mars_to_Earth(){
-	// Computes the minimun wait time to return from Mars to Earth
+void run_rendezvous_opportunities(){
+	/* Chapter 8 - Section 3 (Curtis)
+	 * Computes the minimum wait time to return from Mars to Earth
+	 * Example 8.2 - [pag. 435]
+	*/
 
 	//Constants
 	double R_departure = 227.9e06; // Km Mars Distance to Sun
 	double R_arrival = 149.6e06;   // km Earth's Distance to Sun
 	double mu_sun = 132.71e09;     // Sun mu
-	double n_arrival = 0.01720;    // rad/day (2*pi/365.26)
-	double n_departure = 0.0091327; // rad/day (2*pi/687.99)
+	double n_departure = 0.01720;    // rad/day (2*pi/365.26)
+	double n_arrival = 0.0091327; // rad/day (2*pi/687.99)
 
 	// Variables
 	double t_12, t_12_days, phase_end, t_wait;
-	t_12=ellipse_period(mu_sun, R_departure, R_arrival); // sec
-	t_12_days = t_12/86400; // days
-	phase_end=M_PI-n_arrival*t_12_days; // rad
-	t_wait=time_wait(phase_end, n_arrival, n_departure); // days
+	t_12=ellipse_period_from_radios(mu_sun, R_departure, R_arrival); // sec
+	t_12_days = (t_12/2)/86400; // days
+	phase_end=M_PI-n_departure*t_12_days; // rad
+	t_wait=time_wait(phase_end, n_departure, n_arrival); // days
 	std::cout<<"================================================="<<std::endl;
 	std::cout<<"Time to wait t_wait: "<<t_wait<<std::endl;
 	std::cout<<"================================================="<<std::endl;
@@ -157,8 +160,8 @@ double delta_v_to_hyperbola(double parking_v, double delta_v_inf){
 
 double time_wait(double phase_end, double n1, double n2){
 	/*
-	 * n1: Arrival Traget Angular velocity
-	 * n2: Departure Planet Angular velocity
+	 * n1: Departure Planet Angular velocity
+	 * n2: Arrival Planet Angular velocity
 	 */
 	double t_wait=-1;
 	int N=0;
@@ -183,7 +186,7 @@ double return_trip(double mu_center, double R_arrival, double R_departure, doubl
 	 */
 	double t_wait, t_12, phase_end;
 
-	t_12=ellipse_period(mu_center, R_arrival, R_departure);
+	t_12=ellipse_period_from_radios(mu_center, R_arrival, R_departure);
 	phase_end= M_PI-n_arrival*t_12;
 	t_wait=time_wait(phase_end, n_departure, n_arrival);
 

@@ -11,9 +11,10 @@
 #include "orbit_dynamics.h"
 #include <cmath>
 
-double ellipse_period(double mu_center, double R1, double R2){
+double ellipse_period_from_radios(double mu_center, double R1, double R2){
+	// Computes the period of an ellipse from radios of periapsis and apoapsis.
 	double tc;
-	tc=(M_PI/sqrt(mu_center))*(sqrt((R1+R2)*(R1+R2)*(R1+R2))/sqrt(8));
+	tc=(2*M_PI/sqrt(mu_center))*(sqrt((R1+R2)*(R1+R2)*(R1+R2))/sqrt(8));
 	return tc;
 }
 

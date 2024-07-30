@@ -25,11 +25,26 @@ int main() {
 	mass=init_sv[6];
 	SpaceVehicle my_sat(init_sv, mass);
 	// TESTS
-/*	cout << "--------TESTs-------------\n";
+	/*	cout << "--------TESTs-------------\n";
 	run_tests();
 	cout << "-------- END OF TESTs-------------\n";*/
 
+	// Venus rendezvous
+	//double n_earth= 0.01720; // [rad/day]
+	double n_venus=0.0279;	// [rad/day]
+	double R_earth = 149.6e06;   // km Earth's Distance to Sun
+	double R_venus = 107.5e06;   // km Venus's Distance to Sun
+	double mu_sun = 132.71e09;     // Sun mu
+	double t_12, phi_end;
 
+	t_12=ellipse_period_from_radios(mu_sun, R_earth, R_venus)/(2*86400.0); // sec
+	phi_end=n_venus*t_12-M_PI;
+	std::cout<<"================================================="<<std::endl;
+	std::cout<<"Time to Venus: "<<t_12<<std::endl;
+	std::cout<<"================================================="<<std::endl;
+	std::cout<<"================================================="<<std::endl;
+	std::cout<<"Phase with Earth: "<<phi_end*180.0/M_PI<<std::endl;
+	std::cout<<"================================================="<<std::endl;
 
 
 	//double Rt=6378;
