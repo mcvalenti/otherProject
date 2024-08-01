@@ -73,4 +73,4 @@ beta=arcocos(1/e)
 v_parking=sqrt(mu_earth/rp)
 delta_v=v_parking*(sqrt(2+(v_inf/v_parking)^2)-1)
 
-
+Probado en GMAT
