@@ -52,3 +52,25 @@ Functions to operate planetary transfereces
 orbit_dynamics:
 Functions to compu parameters related with a particular orbit.
 
+============================================================================================
+ RUN programs description
+ ===========================================================================================
+ 
+ PLANETARY DEPARTURE
+ inputs:
+ R1: Distance of planet 1 (departure) to Sun 
+ R2: Distance of planet 2 ("arrival") to Sun
+ rp: periapsis o parking orbit
+ outputs:
+ Beta: orientation of the apse line of the hyperbola to the planet's heliocentric velocity vector.
+ v_inf: velocity of departure that for a hohmann transfer to destiny
+ delta_v: Delta V to transfer the SC from parking orbit to hyperbola. 
+ 
+v_inf=sqrt(mu_sun/R1)*(sqrt(2*R2/(R1+R2)-1)
+ecc=1+rp*v_inf^2/mu_earth
+beta=arcocos(1/e)
+
+v_parking=sqrt(mu_earth/rp)
+delta_v=v_parking*(sqrt(2+(v_inf/v_parking)^2)-1)
+
+

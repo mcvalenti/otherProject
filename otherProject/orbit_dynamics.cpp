@@ -33,6 +33,12 @@ double escape_vel(double mu_center, double r_distance){
 	return v_esc=sqrt(2*mu_center/r_distance);
 }
 
+double hyperbolic_velocity(double semimajor_axis, double r_distance, double mu_central){
+	double hyp_vel;
+	hyp_vel=sqrt(mu_central*((2/r_distance)+(1/fabs(semimajor_axis))));
+	return hyp_vel;
+}
+
 double hyperbolic_excess_velocity(double mu_center, double semimajor_axis){
 	// The speed at withc a body on a hyperbolic paht arrives at infinite
 	double v_inf;
@@ -48,6 +54,19 @@ double hyperbolic_escape_velocity(double v_escape, double v_infinity){
 	hyper_escape_vel=sqrt(v_escape*v_escape+v_infinity*v_infinity);
 	return  hyper_escape_vel;
 }
+
+double hyperbolic_eccentricity_from_v_inf(double rp, double v_inf, double mu_center){
+	double hyp_ecc;
+	hyp_ecc=1+rp*v_inf*v_inf/mu_center;
+	return hyp_ecc;
+}
+
+double hyperolic_semimajor_axis_from_v_inf(double mu_center, double v_inf){
+	double hyp_a;
+	hyp_a=mu_center/(v_inf*v_inf);
+	return hyp_a;
+}
+
 
 double C3(double v_inf){
 	/* C3 Characteristic energy

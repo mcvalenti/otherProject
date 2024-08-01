@@ -17,11 +17,12 @@ using namespace std;
 
 // TO DO: compute phase_end according to inter_to_outer // functions
 
-void run_interplanetary(){
+void run_planetary_departure(){
 	// variables
-	double delta_v, v_elliptic, delta_v_final, v_park;
+	double v_inf, v_elliptic, delta_v_final, v_park;
 	double vel_escape, hyper_escape, v_eclip_norm;
-	double dv_total_departure, C3_orbital;
+	double dv_total_departure, C3_orbital, ecc;
+	double beta, hyp_a;
 	// Constants
 	double pi = M_PI;
 	double AU = 150e6; //  km 149597870.7;
@@ -31,14 +32,14 @@ void run_interplanetary(){
 	double r_parking=h_parking+r_earth; // km
 	double mu_sun=1.33e11; // km3/s2
 
-	// Delta V Heliocentric Homann Transfer
-	double R1=AU-0.8e06; // km
-	double R2=39.8e06; // km Decided by the project
+	// Delta V Heliocentric Hohmann Transfer
+	double R1=AU; // km
+	double R2=107.7504e06; // km venus
 	double inc=22.5; // deg inclination wrt Ecliptic plane
 
 	std::cout<<"================================================="<<std::endl;
-	delta_v=delta_V_homann_heliocentric(mu_sun, R1, R2);
-	std::cout<<"Delta V Homann Heliocentric - DV-H: "<<delta_v<<std::endl;
+	v_inf=delta_V_hohmann_heliocentric(mu_sun, R1, R2);
+	std::cout<<"Delta V Hohmann Heliocentric - V_inf: "<<v_inf<<" km/s"<<std::endl;
 	std::cout<<"================================================="<<std::endl;
 	v_elliptic=elliptic_velocity((R1+R2)/2, R1, mu_sun);
 	std::cout<<"S/C velocity in Elliptic Heliocentric - DV1: "<<v_elliptic<<std::endl;
@@ -48,22 +49,31 @@ void run_interplanetary(){
 	std::cout<<"S/C velocity - V_eclip_norm : "<<v_eclip_norm<<std::endl;
 	std::cout<<"================================================="<<std::endl;
 	// Total DV departure (module)
-	dv_total_departure=sqrt(delta_v*delta_v+v_eclip_norm*v_eclip_norm);
+	dv_total_departure=sqrt(v_inf*v_inf+v_eclip_norm*v_eclip_norm);
 	std::cout<<"Total DV departure (module): "<<dv_total_departure<<std::endl;
 	C3_orbital=dv_total_departure*dv_total_departure;
 	std::cout<<" C3 (orbital): "<<C3_orbital<<std::endl;
 	std::cout<<"================================================="<<std::endl;
 	v_park=parking_v(mu_earth, r_parking);
-	delta_v_final=delta_v_to_hyperbola(v_park, delta_v);
-	std::cout<<"V Parking - v_park: "<<v_park<<std::endl;
+	delta_v_final=delta_v_to_hyperbola(v_park, v_inf);
+	std::cout<<"V Parking : "<<v_park<<std::endl;
 	std::cout<<"From Parking to Hyperbolic excess - Total DV: "<<delta_v_final<<std::endl;
 	std::cout<<"================================================="<<std::endl;
 	vel_escape= escape_vel(mu_earth, r_parking);
 	std::cout<<"V escape from parking orbit - v_escape: "<<vel_escape<<std::endl;
-	hyper_escape=hyperbolic_escape_velocity(vel_escape, delta_v);
+	hyper_escape=hyperbolic_escape_velocity(vel_escape, v_inf);
 	std::cout<<"Total departure velocity - sqrt(v_inf2+v_esc2)- Total V: "<<hyper_escape<<std::endl;
 	std::cout<<"================================================="<<std::endl;
-
+	ecc= hyperbolic_eccentricity_from_v_inf(r_parking, v_inf, mu_earth);
+	std::cout<<"Hyperbolic ecc: "<<ecc<<std::endl;
+	std::cout<<"================================================="<<std::endl;
+	beta= beta_angle(ecc);
+	std::cout<<"Beta : "<<beta*180.0/M_PI<<std::endl;
+	std::cout<<"================================================="<<std::endl;
+	std::cout<<"R parking : "<<r_parking<<std::endl;
+	std::cout<<"================================================="<<std::endl;
+	hyp_a=hyperolic_semimajor_axis_from_v_inf(mu_earth, v_inf);
+	std::cout<<"Hyperbola semimajor axis : "<<hyp_a<<std::endl;
 }
 
 void run_rendezvous_opportunities(){
@@ -90,6 +100,69 @@ void run_rendezvous_opportunities(){
 	std::cout<<"================================================="<<std::endl;
 }
 
+void run_venus_rendezvous(){
+	/*
+	 *  Venus rendezvous
+	 */
+	// Variables (TO DO list and describe)
+	double t_12, phi_end;
+	double v_inf, hyp_a, v_hyp, t_soi;
+	double h_hyp, theta_hyp, F, ecc, M_hyp;
+
+	// Constants
+	//double n_earth= 0.01720; // [rad/day]
+	double n_venus=0.0279;	// [rad/day]
+	double R_earth = 149.6e06;   // km Earth's Distance to Sun
+	double R_venus = 107.5e06;   // km Venus's Distance to Sun
+	double mu_sun = 132.71e09;     // Sun mu
+	double mu_earth = 398604; // km3/s2
+	double r_earth=6378;
+	double h_parking=300; // km
+	double r_parking=h_parking+r_earth; // km
+	double r_soi= 9.24e05; // km
+
+	t_12=ellipse_period_from_radios(mu_sun, R_earth, R_venus)/(2*86400.0); // sec
+	phi_end=n_venus*t_12-M_PI;
+	std::cout<<"================================================="<<std::endl;
+	std::cout<<"Time to Venus: "<<t_12<<std::endl;
+	std::cout<<"================================================="<<std::endl;
+	std::cout<<"Phase with Earth: "<<phi_end*180.0/M_PI<<std::endl;
+	std::cout<<"================================================="<<std::endl;
+	v_inf=delta_V_hohmann_heliocentric(mu_sun, R_earth, R_venus);
+	std::cout<<"================================================="<<std::endl;
+	ecc= hyperbolic_eccentricity_from_v_inf(r_parking, v_inf, mu_earth);
+	std::cout<<"Hyperbolic ecc: "<<ecc<<std::endl;
+	std::cout<<"================================================="<<std::endl;
+	hyp_a=hyperolic_semimajor_axis_from_v_inf(mu_earth, v_inf);
+	std::cout<<"Hyperbola semimajor axis : "<<hyp_a<<std::endl;
+
+
+	// Computation sequence
+	// 1- Compute angular momentum - h=rp*vp
+	// 2- Compute true anomaly at SOI
+	// 3- Compute Eccentric anomaly for hyperbola F
+	// 4- Compute Mean anomaly from F
+	// 5- Compute Time from periapsis when arriving soi
+
+	std::cout<<"================================================="<<std::endl;
+	v_hyp = hyperbolic_velocity(hyp_a, r_parking, mu_earth);
+	std::cout<<"Hyperbolic velocity : "<<v_hyp<<std::endl;
+	std::cout<<"================================================="<<std::endl;
+	h_hyp = r_parking*v_hyp;
+	std::cout<<"Angular Momentum of the Hyperbola : "<<h_hyp<<std::endl;
+	std::cout<<"================================================="<<std::endl;
+	theta_hyp = acos((((h_hyp*h_hyp)/(r_soi*mu_earth))-1)/ecc);
+	std::cout<<"Theta : "<<theta_hyp*180.0/M_PI<<std::endl;
+	std::cout<<"================================================="<<std::endl;
+	F=2*atanh(sqrt((ecc-1)/(ecc+1))*tan(theta_hyp/2));
+	std::cout<<"F : "<<F*180.0/M_PI<<std::endl;
+	std::cout<<"================================================="<<std::endl;
+	M_hyp=ecc*sinh(F)-F;
+	std::cout<<"M_hyp : "<<M_hyp*180.0/M_PI<<std::endl;
+	t_soi=h_hyp*h_hyp*h_hyp*M_hyp/(mu_earth*mu_earth*(sqrt((ecc*ecc-1)*(ecc*ecc-1)*(ecc*ecc-1))));
+	std::cout<<"================================================="<<std::endl;
+	std::cout<<"Time to SOI : "<<t_soi/86400<<std::endl;
+}
 
 double synodic_period_from_velocities(double n1, double n2){
 	/*
@@ -130,9 +203,9 @@ void planetary_rendezvous(char inner_outer){
 
 }
 
-double delta_V_homann_heliocentric(double mu_sun, double R1, double R2){
+double delta_V_hohmann_heliocentric(double mu_sun, double R1, double R2){
 	/* Planetary departure
-	* Heliocentric velocity for a SC departing on a Homann trajectory,
+	* Heliocentric velocity for a SC departing on a Hohmann trajectory,
 	* to a point farther from the Sun.
 	* R1: Distance of the departure planet (planet 1) to the Sun
 	* R2: Distance of the arriving point/planet (planet 2) to the Sun
@@ -156,6 +229,14 @@ double delta_v_to_hyperbola(double parking_v, double delta_v_inf){
 	delta_v_hyp=parking_v*(sqrt(2+(delta_v_inf*delta_v_inf/(parking_v*parking_v)))-1);
 
 	return delta_v_hyp;
+}
+
+double beta_angle(double ecc){
+	// Orientation of the apse line of the hyperbola
+	// to the planet's heliocentric velocity vector.
+	double beta;
+	beta=acos(1/ecc);
+	return beta;
 }
 
 double time_wait(double phase_end, double n1, double n2){
@@ -212,3 +293,4 @@ double return_trip(double mu_center, double R_arrival, double R_departure, doubl
 //period t_earth=365.26;
 //period t_venus=225;
 //period t_mercury=88;
+// Venus radio = 6051.8; /km
