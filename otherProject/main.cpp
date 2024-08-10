@@ -29,7 +29,8 @@ int main() {
 	run_tests();
 	cout << "-------- END OF TESTs-------------\n";*/
 
-	run_venus_rendezvous();
+	//run_venus_rendezvous();
+	run_planetary_departure();
 
 
 	//double Rt=6378;

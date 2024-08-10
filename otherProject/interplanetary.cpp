@@ -25,16 +25,16 @@ void run_planetary_departure(){
 	double beta, hyp_a;
 	// Constants
 	double pi = M_PI;
-	double AU = 150e6; //  km 149597870.7;
+	//double AU = 150e6; //  km 149597870.7;
 	double mu_earth = 398604; // km3/s2
 	double r_earth=6378;
-	double h_parking=300; // km
+	double h_parking=1000; // km
 	double r_parking=h_parking+r_earth; // km
 	double mu_sun=1.33e11; // km3/s2
 
 	// Delta V Heliocentric Hohmann Transfer
-	double R1=AU; // km
-	double R2=107.7504e06; // km venus
+	double R1=148.7e06; // km
+	double R2=39.784e06; // km venus
 	double inc=22.5; // deg inclination wrt Ecliptic plane
 
 	std::cout<<"================================================="<<std::endl;
@@ -46,11 +46,11 @@ void run_planetary_departure(){
 	std::cout<<"================================================="<<std::endl;
 	// Projection In the inclination plane
 	v_eclip_norm=v_elliptic*tan(inc*pi/180.0);
-	std::cout<<"S/C velocity - V_eclip_norm : "<<v_eclip_norm<<std::endl;
+	std::cout<<" V_eclip_norm : "<<v_eclip_norm<<std::endl;
 	std::cout<<"================================================="<<std::endl;
 	// Total DV departure (module)
 	dv_total_departure=sqrt(v_inf*v_inf+v_eclip_norm*v_eclip_norm);
-	std::cout<<"Total DV departure (module): "<<dv_total_departure<<std::endl;
+	std::cout<<"Total DV departure in inclined plane : "<<dv_total_departure<<std::endl;
 	C3_orbital=dv_total_departure*dv_total_departure;
 	std::cout<<" C3 (orbital): "<<C3_orbital<<std::endl;
 	std::cout<<"================================================="<<std::endl;
