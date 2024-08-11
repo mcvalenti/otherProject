@@ -30,7 +30,19 @@ int main() {
 	cout << "-------- END OF TESTs-------------\n";*/
 
 	//run_venus_rendezvous();
-	run_planetary_departure();
+	//run_planetary_departure();
+	double mu_central=1.33e11;
+	double r_distance=39800000;
+	double R1=39800000;
+	double R2=155358642;
+	double semimajor_axis=(R1+R2)/2;
+	double semimajor_axis2=(R1+149000000)/2;
+	double v1, v2, dv;
+	v1=elliptic_velocity(semimajor_axis, r_distance, mu_central);
+	v2=elliptic_velocity(semimajor_axis2, r_distance, mu_central);
+	dv=v1-v2;
+	cout << "-------- DV : "<<dv<<endl;
+	cout << "-------- Semimajor a : "<< semimajor_axis2 <<endl;
 
 
 	//double Rt=6378;
